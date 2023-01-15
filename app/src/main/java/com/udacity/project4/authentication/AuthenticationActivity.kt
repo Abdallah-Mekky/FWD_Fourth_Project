@@ -7,6 +7,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import com.firebase.ui.auth.AuthMethodPickerLayout
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
@@ -80,10 +81,18 @@ class AuthenticationActivity : AppCompatActivity() {
             AuthUI.IdpConfig.GoogleBuilder().build()
         )
 
+        val customLayout = AuthMethodPickerLayout
+            .Builder(R.layout.login_register)
+            .setGoogleButtonId(R.id.login_google)
+            .setEmailButtonId(R.id.login)
+            .build()
+
+
         val signInIntent = AuthUI.getInstance()
             .createSignInIntentBuilder()
             .setAvailableProviders(providers)
             .setTheme(R.style.AppTheme)
+            .setAuthMethodPickerLayout(customLayout)
             .build()
 
         signInLauncher.launch(signInIntent)
