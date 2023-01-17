@@ -28,18 +28,10 @@ android {
         jvmTarget = "1.8"
     }
 
-    testOptions {
-        unitTests.all {
-            systemProperty 'robolectric.dependency.repo.url', 'https://local-mirror/repo'
-            systemProperty 'robolectric.dependency.repo.id', 'local'
-        }
+    testOptions.unitTests {
+        includeAndroidResources = true
+        returnDefaultValues = true
     }
-
-
-//    testOptions.unitTests {
-//        includeAndroidResources = true
-//        returnDefaultValues = true
-//    }
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
