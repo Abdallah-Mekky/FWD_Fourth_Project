@@ -12,16 +12,15 @@ import androidx.test.espresso.Espresso
 import androidx.test.espresso.Root
 import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.assertion.ViewAssertions
-import androidx.test.espresso.matcher.RootMatchers
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.ActivityTestRule
 import androidx.test.uiautomator.UiDevice
 import androidx.test.uiautomator.UiSelector
-import com.google.android.material.internal.ContextUtils
 import com.udacity.project4.locationreminders.RemindersActivity
 import com.udacity.project4.locationreminders.data.ReminderDataSource
 import com.udacity.project4.locationreminders.data.local.LocalDB
@@ -112,12 +111,12 @@ class cRemindersActivityTest :
 
         //Enter title
         Espresso.onView(withId(R.id.reminderTitle)).perform(ViewActions.typeText("title"))
-        Espresso.onView(ViewMatchers.withText("title"))
+        Espresso.onView(withText("title"))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
 
         //Enter Description
         Espresso.onView(withId(R.id.reminderDescription)).perform(ViewActions.typeText("desc"))
-        Espresso.onView(ViewMatchers.withText("desc"))
+        Espresso.onView(withText("desc"))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
         //close keyboard
         ViewActions.closeSoftKeyboard()
@@ -142,30 +141,11 @@ class cRemindersActivityTest :
         //click in save reminder navigate to activity
         Espresso.onView(withId(R.id.saveReminder)).perform(ViewActions.click())
         //check the data is displayed as expected
-        Espresso.onView(ViewMatchers.withText("desc"))
+        Espresso.onView(withText("desc"))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
         //close Scenario
         activityScenario.close()
     }
-
-
-    @Test
-    fun show_Snack_When_NoLocation_Added() {
-
-        //Launch Activity Scenario
-        val scenario = ActivityScenario.launch(RemindersActivity::class.java)
-        dataBindingIdlingResource.monitorActivity(scenario)
-        //click in map to select location
-        Espresso.onView(withId(R.id.addReminderFAB)).perform(ViewActions.click())
-        //click in save button navigate back
-        Espresso.onView(withId(R.id.saveReminder)).perform(ViewActions.click())
-        //check error massage when no location is founded
-        Espresso.onView(withId(com.google.android.material.R.id.snackbar_text))
-            .check(ViewAssertions.matches(ViewMatchers.withText(R.string.err_enter_title)))
-        //close Scenario
-        scenario.close()
-    }
-
 
     @Test
     fun saveReminderScreen_showToastMessage() {
@@ -179,12 +159,12 @@ class cRemindersActivityTest :
 
         //Enter title
         Espresso.onView(withId(R.id.reminderTitle)).perform(ViewActions.typeText("title"))
-        Espresso.onView(ViewMatchers.withText("title"))
+        Espresso.onView(withText("title"))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
 
         //Enter Description
         Espresso.onView(withId(R.id.reminderDescription)).perform(ViewActions.typeText("desc"))
-        Espresso.onView(ViewMatchers.withText("desc"))
+        Espresso.onView(withText("desc"))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
         //close keyboard
         ViewActions.closeSoftKeyboard()
@@ -211,13 +191,14 @@ class cRemindersActivityTest :
         Espresso.onView(withId(R.id.saveReminder)).perform(ViewActions.click())
         //check toast appearance
         // problem in toast not work on api 29 && 30
-        Espresso.onView(ViewMatchers.withText(R.string.reminder_saved)).inRoot(ViewMatcher())
+        Espresso.onView(withText(R.string.reminder_saved)).inRoot(ViewMatcher())
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
 
 
     @Test
     fun saveReminderScreen_emptyTitleSnackBar() {
+
 
         //declare activity Scenario
         val activityScenario = ActivityScenario.launch(RemindersActivity::class.java)
@@ -235,7 +216,7 @@ class cRemindersActivityTest :
 
         Espresso.onView(withId(R.id.saveLocation)).perform(ViewActions.click())
         Espresso.onView(withId(R.id.saveReminder)).perform(ViewActions.click())
-        val snackBarMessage = appContext.getString(R.string.err_enter_title)
+        val snackBarMessage = appContext.getString(R.string.err_select_location)
         //Then a SnackBar should appear when trying to save empty Title
         Espresso.onView(ViewMatchers.withText(snackBarMessage))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))

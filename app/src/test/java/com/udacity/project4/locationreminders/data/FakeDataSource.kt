@@ -18,27 +18,30 @@ class FakeDataSource : ReminderDataSource {
 
     override suspend fun getReminders(): Result<List<ReminderDTO>> {
         if (shouldReturnError)
-            return Result.Error("Tasks not found")
+            return Result.Error("Error Loading Reminders")
         else
             return Result.Success(remindersDaoList.values.toList())
 
     }
 
     override suspend fun saveReminder(reminder: ReminderDTO) {
-        remindersDaoList[reminder.id] = reminder
+        remindersDaoList.set(reminder.id,reminder)
     }
 
     override suspend fun getReminder(id: String): Result<ReminderDTO> {
         if (shouldReturnError) {
-            return Result.Error("Tasks not found")
+            return Result.Error("Error Loading Reminder with id $id")
+        }
+        else{
+
+            val reminder = remindersDaoList[id]
+
+
+
+            return if(reminder != null) Result.Success(reminder) else Result.Error("Tasks not found")
         }
 
-        val reminder = remindersDaoList[id]
 
-        if(reminder != null)
-            return Result.Success(reminder)
-
-        return Result.Error("Tasks not found")
     }
 
     override suspend fun deleteAllReminders() {

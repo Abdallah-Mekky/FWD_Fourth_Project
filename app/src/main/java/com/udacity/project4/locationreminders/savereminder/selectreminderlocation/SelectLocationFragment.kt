@@ -4,12 +4,9 @@ package com.udacity.project4.locationreminders.savereminder.selectreminderlocati
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.content.res.Resources
-import android.location.Location
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -32,7 +29,6 @@ import com.udacity.project4.base.NavigationCommand
 import com.udacity.project4.databinding.FragmentSelectLocationBinding
 import com.udacity.project4.locationreminders.savereminder.SaveReminderViewModel
 import com.udacity.project4.locationreminders.savereminder.selectreminderlocation.SelectLocationConstants.REQUEST_CODE_BACKGROUND
-import com.udacity.project4.locationreminders.savereminder.selectreminderlocation.SelectLocationConstants.REQUEST_LOCATION_PERMISSION
 import com.udacity.project4.locationreminders.savereminder.selectreminderlocation.SelectLocationConstants.REQUEST_TURN_DEVICE_LOCATION_ON
 import com.udacity.project4.utils.setDisplayHomeAsUpEnabled
 import org.koin.android.ext.android.inject
@@ -199,7 +195,26 @@ class SelectLocationFragment : BaseFragment(),OnMapReadyCallback {
         return ContextCompat.checkSelfPermission(
             requireContext(),
             Manifest.permission.ACCESS_FINE_LOCATION
-        ) === PackageManager.PERMISSION_GRANTED
+        ) == PackageManager.PERMISSION_GRANTED
+    }
+
+    @RequiresApi(Build.VERSION_CODES.Q)
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+            enableMyLocation()
+        } else {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+                checkDeviceLocationSettings()
+            } else {
+                requestPermission()
+            }
+        }
+
     }
 
     private fun enableMyLocation() {
@@ -208,7 +223,7 @@ class SelectLocationFragment : BaseFragment(),OnMapReadyCallback {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
                 checkDeviceLocationSettings()
             } else {
-                requestQPermission()
+                requestPermission()
 
             }
 
@@ -223,7 +238,7 @@ class SelectLocationFragment : BaseFragment(),OnMapReadyCallback {
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)
-    private fun requestQPermission() {
+    private fun requestPermission() {
         val hasForegroundPermission = ActivityCompat.checkSelfPermission(
             requireActivity(),
             Manifest.permission.ACCESS_FINE_LOCATION
