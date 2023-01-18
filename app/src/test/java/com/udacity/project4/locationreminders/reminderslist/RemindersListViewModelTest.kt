@@ -101,9 +101,9 @@ class RemindersListViewModelTest {
     fun `when list not loaded should show loading `()= runBlockingTest{
         fakeDataSource.saveReminder(remindersList[0])
 
+        MatcherAssert.assertThat(reminderListViewModel.showLoading.getOrAwaitValueTest(), Matchers.`is`(false))
         mainCoroutineRule.pauseDispatcher()
         reminderListViewModel.loadReminders()
-
         MatcherAssert.assertThat(reminderListViewModel.showLoading.getOrAwaitValueTest(), Matchers.`is`(true))
 
     }
