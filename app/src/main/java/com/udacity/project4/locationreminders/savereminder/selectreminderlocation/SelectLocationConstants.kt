@@ -5,4 +5,5 @@ object SelectLocationConstants {
      const val REQUEST_CODE_BACKGROUND = 20
      const val REQUEST_TURN_DEVICE_LOCATION_ON = 8
      const val REQUEST_LOCATION_PERMISSION = 2001
+     const val TURN_DEVICE_LOCATION_ON_REQUEST_CODE = 35
 }

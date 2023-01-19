@@ -98,11 +98,11 @@ class RemindersListViewModelTest {
         MatcherAssert.assertThat( reminderListViewModel.remindersList.getOrAwaitValueTest().size, Matchers.`is`(1))
     }
     @Test
-    fun `when list not loaded should show loading `()= runBlockingTest{
+    fun `when list not loaded should show loading `()= mainCoroutineRule.runBlockingTest{
         fakeDataSource.saveReminder(remindersList[0])
 
         MatcherAssert.assertThat(reminderListViewModel.showLoading.getOrAwaitValueTest(), Matchers.`is`(false))
-        mainCoroutineRule.pauseDispatcher()
+
         reminderListViewModel.loadReminders()
         MatcherAssert.assertThat(reminderListViewModel.showLoading.getOrAwaitValueTest(), Matchers.`is`(true))
 
@@ -115,7 +115,7 @@ class RemindersListViewModelTest {
 
         reminderListViewModel.loadReminders()
 
-        MatcherAssert.assertThat(reminderListViewModel.showSnackBar.getOrAwaitValueTest(), Matchers.`is`("Tasks not found"))
+        MatcherAssert.assertThat(reminderListViewModel.showSnackBar.getOrAwaitValueTest(), Matchers.`is`("Reminder not found!"))
     }
 
 

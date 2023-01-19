@@ -104,17 +104,16 @@ class SaveReminderViewModelTest {
 
     }
     @Test
-    fun `when list is not loaded should show loading `() = runBlockingTest {
+    fun `when list is not loaded should show loading `() = mainCoroutineRule.runBlockingTest {
+            saveReminderViewModel.validateAndSaveReminder(reminderDataItemList[2])
+
+            MatcherAssert.assertThat(saveReminderViewModel.showLoading.getOrAwaitValueTest(), Matchers.`is`(
+                true)
+            )
+
+        }
 
 
-        mainCoroutineRule.pauseDispatcher()
-        saveReminderViewModel.validateAndSaveReminder(reminderDataItemList[2])
-
-        MatcherAssert.assertThat(saveReminderViewModel.showLoading.getOrAwaitValueTest(), Matchers.`is`(
-            true)
-        )
-
-    }
 
     @Test
     fun `when list is  loaded should show massage saved Reminder Saved ! `() = runBlockingTest {

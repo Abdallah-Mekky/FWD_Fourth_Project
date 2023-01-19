@@ -38,7 +38,7 @@ class FakeDataSource : ReminderDataSource {
 
 
 
-            return if(reminder != null) Result.Success(reminder) else Result.Error("Tasks not found")
+            return if(reminder != null) Result.Success(reminder) else Result.Error("Reminder not found!")
         }
 
 

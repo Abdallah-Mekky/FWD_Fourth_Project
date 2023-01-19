@@ -11,6 +11,7 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -228,6 +229,7 @@ class SelectLocationFragment : BaseFragment(),OnMapReadyCallback {
             }
 
         } else {
+            Toast.makeText(requireContext(),"Please ,You Must Open Location",Toast.LENGTH_LONG).show()
             ActivityCompat.requestPermissions(
                 context as Activity,
                 arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
